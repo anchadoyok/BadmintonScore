@@ -42,15 +42,15 @@ const renderSlot = (match: MatchState, teamId: TeamId, courtSide: CourtSide) => 
 /**
  * Doubles mini court — umpire's point of view with a VERTICAL net.
  *
- * Physical mapping (looking from umpire's chair at the side of the court):
+ * Physical mapping — players face the net:
  *
- *   LEFT SIDE team (facing →)           RIGHT SIDE team (facing ←)
- *   ─────────────────────────  Net │  ─────────────────────────────
- *   [their RIGHT court]  (top)  │  │  [their LEFT court]  (top)
- *   [their LEFT  court]  (bot)  │  │  [their RIGHT court] (bot)
+ *   LEFT SIDE team (faces →)            RIGHT SIDE team (faces ←)
+ *   ──────────────────────────  Net │  ──────────────────────────
+ *   [their LEFT  court]  (top)   │  │  [their RIGHT court] (top)
+ *   [their RIGHT court]  (bot)   │  │  [their LEFT  court] (bot)
  *
- * This ensures the server (e.g., left-top for a right serve) and receiver
- * (right-bottom) are always in DIAGONALLY OPPOSITE cells. ✓
+ * Right serve → server LEFT-BOT, receiver RIGHT-TOP  → diagonal ✓
+ * Left  serve → server LEFT-TOP, receiver RIGHT-BOT  → diagonal ✓
  */
 export const MiniCourt = ({ match }: MiniCourtProps) => {
   const uiSideSwapped = match.uiSideSwapped ?? false;
@@ -85,19 +85,27 @@ export const MiniCourt = ({ match }: MiniCourtProps) => {
 
       {/* Vertical-net court layout */}
       <div className="court-layout-v">
-        {/* LEFT half — right court on top, left court on bottom */}
+        {/*
+          LEFT half — player faces RIGHT (toward net).
+          Their right hand points DOWN  → RIGHT court = bottom.
+          Their left  hand points UP    → LEFT  court = top.
+        */}
         <div className="court-half-v">
-          {renderSlot(match, leftTeam, "right")}
-          {renderSlot(match, leftTeam, "left")}
+          {renderSlot(match, leftTeam, "left")}   {/* top    */}
+          {renderSlot(match, leftTeam, "right")}  {/* bottom */}
         </div>
 
         {/* Vertical net */}
         <div className="court-net-v">Net</div>
 
-        {/* RIGHT half — left court on top (mirrored), right court on bottom */}
+        {/*
+          RIGHT half — player faces LEFT (toward net).
+          Their right hand points UP   → RIGHT court = top.
+          Their left  hand points DOWN → LEFT  court = bottom.
+        */}
         <div className="court-half-v">
-          {renderSlot(match, rightTeam, "left")}
-          {renderSlot(match, rightTeam, "right")}
+          {renderSlot(match, rightTeam, "right")}  {/* top    */}
+          {renderSlot(match, rightTeam, "left")}   {/* bottom */}
         </div>
       </div>
     </div>
