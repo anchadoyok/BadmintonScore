@@ -45,6 +45,8 @@ export interface MatchSetupInput {
   initialServerTeam: TeamId;
   initialServerPlayerId?: string;
   initialReceiverPlayerId?: string;
+  /** Which side of the court Team A starts on from the umpire's perspective. Defaults to "left". */
+  teamAInitialSide?: "left" | "right";
 }
 
 export interface TeamRuntimeState {

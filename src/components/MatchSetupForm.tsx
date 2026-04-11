@@ -16,6 +16,7 @@ interface SetupFormState {
   winBy: number;
   maxPoints: number;
   initialServerTeam: TeamId;
+  teamAInitialSide: "left" | "right";
 }
 
 const initialState: SetupFormState = {
@@ -27,7 +28,8 @@ const initialState: SetupFormState = {
   targetPoints: 21,
   winBy: 2,
   maxPoints: 30,
-  initialServerTeam: "A"
+  initialServerTeam: "A",
+  teamAInitialSide: "left"
 };
 
 export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
@@ -74,7 +76,8 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
       teamAPlayers: form.matchType === "singles" ? [form.teamAPlayers[0]] : form.teamAPlayers,
       teamBPlayers: form.matchType === "singles" ? [form.teamBPlayers[0]] : form.teamBPlayers,
       initialServerPlayerId: form.matchType === "doubles" ? initialServerPlayerId : undefined,
-      initialReceiverPlayerId: form.matchType === "doubles" ? initialReceiverPlayerId : undefined
+      initialReceiverPlayerId: form.matchType === "doubles" ? initialReceiverPlayerId : undefined,
+      teamAInitialSide: form.teamAInitialSide
     });
   };
 
@@ -228,6 +231,41 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
               </select>
             </label>
           )}
+        </div>
+
+        {/* ── Court side assignment ─────────────────────────────────────── */}
+        <div className="field">
+          <span>Starting court side (umpire's view)</span>
+          <div className="side-assignment-grid">
+            <div className="side-assign-card">
+              <span className="eyebrow">Team A</span>
+              <strong>{form.teamAName || "Team A"}</strong>
+              <div className="segment" style={{ marginTop: "0.5rem" }}>
+                <button
+                  type="button"
+                  className={form.teamAInitialSide === "left" ? "segment-option is-active" : "segment-option"}
+                  onClick={() => setForm({ ...form, teamAInitialSide: "left" })}
+                >
+                  Left side
+                </button>
+                <button
+                  type="button"
+                  className={form.teamAInitialSide === "right" ? "segment-option is-active" : "segment-option"}
+                  onClick={() => setForm({ ...form, teamAInitialSide: "right" })}
+                >
+                  Right side
+                </button>
+              </div>
+            </div>
+            <div className="side-assign-divider">↔</div>
+            <div className="side-assign-card">
+              <span className="eyebrow">Team B</span>
+              <strong>{form.teamBName || "Team B"}</strong>
+              <p className="muted" style={{ marginTop: "0.5rem", fontSize: "0.88rem" }}>
+                {form.teamAInitialSide === "left" ? "Right side (auto)" : "Left side (auto)"}
+              </p>
+            </div>
+          </div>
         </div>
 
         <p className="muted">

@@ -261,7 +261,7 @@ export const createMatchState = (input: MatchSetupInput): MatchState => {
     completedSets: [],
     currentSet: 1,
     setWins: { A: 0, B: 0 },
-    uiSideSwapped: false,
+    uiSideSwapped: input.teamAInitialSide === "right",
     set3IntervalPending: false
   };
 

@@ -6,21 +6,15 @@ interface MiniCourtProps {
 }
 
 /**
- * Render one service-court cell.
+ * Render a single service-court cell.
  *
- * @param match       Live match state.
- * @param teamId      Which team owns this cell.
- * @param playerSide  The player's OWN court side ("left" or "right" from their perspective).
- * @param label       Umpire-POV column label ("LEFT" or "RIGHT") shown in the cell.
+ * @param match      Live match state.
+ * @param teamId     Which team owns this half.
+ * @param courtSide  The player's OWN service court ("left" or "right" from their POV).
  */
-const renderPlayerSlot = (
-  match: MatchState,
-  teamId: TeamId,
-  playerSide: CourtSide,
-  label: string
-) => {
+const renderSlot = (match: MatchState, teamId: TeamId, courtSide: CourtSide) => {
   const player = match.config.teams[teamId].players.find(
-    (entry) => getPlayerCourtSide(match, teamId, entry.id) === playerSide
+    (p) => getPlayerCourtSide(match, teamId, p.id) === courtSide
   );
 
   if (!player) {
@@ -29,32 +23,44 @@ const renderPlayerSlot = (
 
   const isServer = player.id === match.service.serverPlayerId;
   const isReceiver = player.id === match.service.receiverPlayerId;
+  const cls = isServer
+    ? "court-player is-server"
+    : isReceiver
+      ? "court-player is-receiver"
+      : "court-player";
 
   return (
-    <div className={isServer ? "court-player is-server" : isReceiver ? "court-player is-receiver" : "court-player"}>
+    <div className={cls}>
       <span>{getPlayerLabel(match, player.id)}</span>
-      <small>{label}</small>
+      <small>{courtSide.toUpperCase()}</small>
       {isServer && <strong>Server</strong>}
       {isReceiver && <strong>Receiver</strong>}
     </div>
   );
 };
 
+/**
+ * Doubles mini court — umpire's point of view with a VERTICAL net.
+ *
+ * Physical mapping (looking from umpire's chair at the side of the court):
+ *
+ *   LEFT SIDE team (facing →)           RIGHT SIDE team (facing ←)
+ *   ─────────────────────────  Net │  ─────────────────────────────
+ *   [their RIGHT court]  (top)  │  │  [their LEFT court]  (top)
+ *   [their LEFT  court]  (bot)  │  │  [their RIGHT court] (bot)
+ *
+ * This ensures the server (e.g., left-top for a right serve) and receiver
+ * (right-bottom) are always in DIAGONALLY OPPOSITE cells. ✓
+ */
 export const MiniCourt = ({ match }: MiniCourtProps) => {
   const uiSideSwapped = match.uiSideSwapped ?? false;
 
-  /**
-   * Physical layout from the umpire's chair:
-   *
-   *   FAR  team (top):   their RIGHT court is on the UMPIRE'S LEFT column,
-   *                      because they face TOWARD the umpire (opposite direction to near team).
-   *   NEAR team (bottom): their LEFT court is on the UMPIRE'S LEFT column  (normal orientation).
-   *
-   * Default:   near = A, far = B
-   * Swapped:   near = B, far = A  (teams changed ends after set 1)
-   */
-  const nearTeam: TeamId = uiSideSwapped ? "B" : "A";
-  const farTeam: TeamId = uiSideSwapped ? "A" : "B";
+  // Which team is on the LEFT vs RIGHT side of the umpire's view.
+  const leftTeam: TeamId = uiSideSwapped ? "B" : "A";
+  const rightTeam: TeamId = uiSideSwapped ? "A" : "B";
+
+  const leftColorClass = leftTeam === "A" ? "court-label-a" : "court-label-b";
+  const rightColorClass = rightTeam === "A" ? "court-label-a" : "court-label-b";
 
   return (
     <div className="court-card">
@@ -66,39 +72,33 @@ export const MiniCourt = ({ match }: MiniCourtProps) => {
         <span className="stat-chip">{match.service.serviceSide} serve</span>
       </div>
 
-      {/* Umpire-POV column headers */}
-      <div className="court-col-labels">
-        <span>LEFT</span>
-        <span>RIGHT</span>
+      {/* Team name labels above each half */}
+      <div className="court-side-labels">
+        <span className={leftColorClass}>
+          {match.config.teams[leftTeam].name}
+        </span>
+        <span />
+        <span className={rightColorClass}>
+          {match.config.teams[rightTeam].name}
+        </span>
       </div>
 
-      <div className="court-grid">
-        {/*
-          FAR team (top row) — facing TOWARD the umpire.
-          Their "right" court is physically on the umpire's LEFT.
-          Render right first → appears in left column.
-        */}
-        {renderPlayerSlot(match, farTeam, "right", "LEFT")}
-        {renderPlayerSlot(match, farTeam, "left", "RIGHT")}
+      {/* Vertical-net court layout */}
+      <div className="court-layout-v">
+        {/* LEFT half — right court on top, left court on bottom */}
+        <div className="court-half-v">
+          {renderSlot(match, leftTeam, "right")}
+          {renderSlot(match, leftTeam, "left")}
+        </div>
 
-        <div className="court-net">Net</div>
+        {/* Vertical net */}
+        <div className="court-net-v">Net</div>
 
-        {/*
-          NEAR team (bottom row) — facing AWAY from the umpire.
-          Their "left" is umpire's left, "right" is umpire's right (normal).
-        */}
-        {renderPlayerSlot(match, nearTeam, "left", "LEFT")}
-        {renderPlayerSlot(match, nearTeam, "right", "RIGHT")}
-      </div>
-
-      {/* Team labels so the umpire knows who is who */}
-      <div className="court-team-labels">
-        <span className={farTeam === "A" ? "court-label-a" : "court-label-b"}>
-          ↑ {match.config.teams[farTeam].name} (far)
-        </span>
-        <span className={nearTeam === "A" ? "court-label-a" : "court-label-b"}>
-          ↓ {match.config.teams[nearTeam].name} (near)
-        </span>
+        {/* RIGHT half — left court on top (mirrored), right court on bottom */}
+        <div className="court-half-v">
+          {renderSlot(match, rightTeam, "left")}
+          {renderSlot(match, rightTeam, "right")}
+        </div>
       </div>
     </div>
   );
