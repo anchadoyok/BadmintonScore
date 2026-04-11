@@ -32,8 +32,24 @@ export const HistoryScreen = ({ history, onBack, onReplay }: HistoryScreenProps)
             <div>
               <p className="eyebrow">{summary.matchType}</p>
               <h3>
-                {summary.teamAName} {summary.scoreA} - {summary.scoreB} {summary.teamBName}
+                {summary.teamAName} vs {summary.teamBName}
               </h3>
+              {summary.sets && summary.sets.length > 0 ? (
+                <div className="set-badges" style={{ marginTop: "0.35rem" }}>
+                  {summary.sets.map((set) => (
+                    <span
+                      key={set.setNumber}
+                      className={`set-badge ${set.winner === "A" ? "set-badge-a" : "set-badge-b"}`}
+                    >
+                      {set.scoreA}–{set.scoreB}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="muted">
+                  {summary.scoreA}–{summary.scoreB}
+                </p>
+              )}
               <p className="muted">
                 Winner: {summary.winnerTeam === "A" ? summary.teamAName : summary.teamBName}
               </p>

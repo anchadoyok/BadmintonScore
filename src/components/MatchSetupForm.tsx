@@ -33,10 +33,18 @@ const initialState: SetupFormState = {
 export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
   const [form, setForm] = useState<SetupFormState>(initialState);
   const [initialServerPlayerId, setInitialServerPlayerId] = useState<string>("A-1");
+  const [initialReceiverPlayerId, setInitialReceiverPlayerId] = useState<string>("B-1");
+
+  const receivingTeam: TeamId = form.initialServerTeam === "A" ? "B" : "A";
 
   const servingPlayers = useMemo(
     () => (form.initialServerTeam === "A" ? form.teamAPlayers : form.teamBPlayers),
     [form.initialServerTeam, form.teamAPlayers, form.teamBPlayers]
+  );
+
+  const receivingPlayers = useMemo(
+    () => (receivingTeam === "A" ? form.teamAPlayers : form.teamBPlayers),
+    [receivingTeam, form.teamAPlayers, form.teamBPlayers]
   );
 
   const handleMatchTypeChange = (matchType: MatchType) => {
@@ -47,6 +55,15 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
       teamBPlayers: matchType === "singles" ? [current.teamBPlayers[0]] : [current.teamBPlayers[0], current.teamBPlayers[1] ?? ""]
     }));
     setInitialServerPlayerId("A-1");
+    setInitialReceiverPlayerId("B-1");
+  };
+
+  const handleServingTeamChange = (team: TeamId) => {
+    setForm({ ...form, initialServerTeam: team });
+    setInitialServerPlayerId(`${team}-1`);
+    // Reset receiver to first player of the new receiving team.
+    const newReceivingTeam: TeamId = team === "A" ? "B" : "A";
+    setInitialReceiverPlayerId(`${newReceivingTeam}-1`);
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -56,7 +73,8 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
       ...form,
       teamAPlayers: form.matchType === "singles" ? [form.teamAPlayers[0]] : form.teamAPlayers,
       teamBPlayers: form.matchType === "singles" ? [form.teamBPlayers[0]] : form.teamBPlayers,
-      initialServerPlayerId: form.matchType === "doubles" ? initialServerPlayerId : undefined
+      initialServerPlayerId: form.matchType === "doubles" ? initialServerPlayerId : undefined,
+      initialReceiverPlayerId: form.matchType === "doubles" ? initialReceiverPlayerId : undefined
     });
   };
 
@@ -172,11 +190,7 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
             <span>Initial serving team</span>
             <select
               value={form.initialServerTeam}
-              onChange={(event) => {
-                const team = event.target.value as TeamId;
-                setForm({ ...form, initialServerTeam: team });
-                setInitialServerPlayerId(team === "A" ? "A-1" : "B-1");
-              }}
+              onChange={(event) => handleServingTeamChange(event.target.value as TeamId)}
             >
               <option value="A">{form.teamAName || "Team A"}</option>
               <option value="B">{form.teamBName || "Team B"}</option>
@@ -192,6 +206,22 @@ export const MatchSetupForm = ({ onStart, onCancel }: MatchSetupFormProps) => {
                   return (
                     <option key={id} value={id}>
                       {player || `Player ${form.initialServerTeam}${index + 1}`}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+          )}
+
+          {form.matchType === "doubles" && (
+            <label className="field">
+              <span>First receiver</span>
+              <select value={initialReceiverPlayerId} onChange={(event) => setInitialReceiverPlayerId(event.target.value)}>
+                {receivingPlayers.map((player, index) => {
+                  const id = `${receivingTeam}-${index + 1}`;
+                  return (
+                    <option key={id} value={id}>
+                      {player || `Player ${receivingTeam}${index + 1}`}
                     </option>
                   );
                 })}

@@ -58,7 +58,14 @@ export const seedHistory: MatchSnapshot[] = [
     createdAt: "2026-04-09T10:10:00.000Z",
     updatedAt: "2026-04-09T10:42:00.000Z",
     completedAt: "2026-04-09T10:42:00.000Z",
-    savedToHistory: true
+    savedToHistory: true,
+    completedSets: [
+      { setNumber: 1, scoreA: 21, scoreB: 18, winner: "A" }
+    ],
+    currentSet: 1,
+    setWins: { A: 1, B: 0 },
+    uiSideSwapped: false,
+    set3IntervalPending: false
   },
   {
     id: "seed-2",
@@ -109,6 +116,13 @@ export const seedHistory: MatchSnapshot[] = [
     createdAt: "2026-04-08T08:00:00.000Z",
     updatedAt: "2026-04-08T08:22:00.000Z",
     completedAt: "2026-04-08T08:22:00.000Z",
-    savedToHistory: true
+    savedToHistory: true,
+    completedSets: [
+      { setNumber: 1, scoreA: 16, scoreB: 14, winner: "A" }
+    ],
+    currentSet: 1,
+    setWins: { A: 1, B: 0 },
+    uiSideSwapped: false,
+    set3IntervalPending: false
   }
 ];

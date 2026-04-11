@@ -10,6 +10,7 @@ import {
   createCompletedSummary,
   createMatchState,
   createRematchState,
+  dismissSet3Interval,
   undoLastPoint
 } from "./lib/badmintonRules";
 import { ensureSeedHistory, loadCurrentMatch, loadHistory, saveCurrentMatch, saveHistory } from "./lib/storage";
@@ -80,6 +81,14 @@ function App() {
 
     setCurrentMatch(createRematchState(currentMatch));
     setScreen("live");
+  };
+
+  const handleDismissInterval = () => {
+    if (!currentMatch) {
+      return;
+    }
+
+    setCurrentMatch(dismissSet3Interval(currentMatch));
   };
 
   const handleCorrection = (input: ManualCorrectionInput) => {
@@ -164,6 +173,7 @@ function App() {
             onUndo={handleUndo}
             onReset={handleReset}
             onCorrection={handleCorrection}
+            onDismissInterval={handleDismissInterval}
             onFinishView={() => setScreen("summary")}
             onExit={handleExitToHome}
           />

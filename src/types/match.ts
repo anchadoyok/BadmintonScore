@@ -26,6 +26,13 @@ export interface MatchConfig {
   settings: MatchSettings;
 }
 
+export interface SetScore {
+  setNumber: number;
+  scoreA: number;
+  scoreB: number;
+  winner: TeamId;
+}
+
 export interface MatchSetupInput {
   matchType: MatchType;
   teamAName: string;
@@ -37,6 +44,7 @@ export interface MatchSetupInput {
   maxPoints: number;
   initialServerTeam: TeamId;
   initialServerPlayerId?: string;
+  initialReceiverPlayerId?: string;
 }
 
 export interface TeamRuntimeState {
@@ -71,6 +79,22 @@ export interface MatchSnapshot {
   updatedAt: string;
   completedAt?: string;
   savedToHistory: boolean;
+  /** Completed sets in order (populated when each set ends). */
+  completedSets: SetScore[];
+  /** Which set is currently being played (1, 2, or 3). */
+  currentSet: number;
+  /** How many sets each team has won so far. */
+  setWins: Record<TeamId, number>;
+  /**
+   * When true, Team B is displayed on the LEFT UI column and Team A on the RIGHT,
+   * reflecting the physical end-change that happens between sets.
+   */
+  uiSideSwapped: boolean;
+  /**
+   * Set to true when the leading score first reaches 11 in the third set.
+   * Cleared once the umpire confirms the court change via dismissSet3Interval().
+   */
+  set3IntervalPending: boolean;
 }
 
 export interface MatchState extends MatchSnapshot {
@@ -96,4 +120,5 @@ export interface CompletedMatchSummary {
   winnerTeam: TeamId;
   completedAt: string;
   durationSeconds: number;
+  sets: SetScore[];
 }

@@ -403,6 +403,155 @@ h3 {
   background: rgba(116, 198, 157, 0.14);
 }
 
+/* ── Set history banner ───────────────────────────────────────────────────── */
+
+.set-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(244, 211, 94, 0.07);
+  border: 1px solid rgba(244, 211, 94, 0.2);
+  border-radius: 18px;
+  padding: 0.85rem 1rem;
+}
+
+.set-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.set-badge {
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.set-badge-a {
+  background: rgba(231, 111, 81, 0.18);
+  border-color: rgba(231, 111, 81, 0.4);
+  color: #f4c6b8;
+}
+
+.set-badge-b {
+  background: rgba(76, 201, 240, 0.18);
+  border-color: rgba(76, 201, 240, 0.4);
+  color: #a8e8f8;
+}
+
+/* ── Set 3 interval / court-change prompt ─────────────────────────────────── */
+
+.interval-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(116, 198, 157, 0.12);
+  border: 1px solid rgba(116, 198, 157, 0.45);
+  border-radius: 20px;
+  padding: 1rem 1.2rem;
+  animation: pulse-border 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(116, 198, 157, 0.45); }
+  50%       { border-color: rgba(116, 198, 157, 0.9); }
+}
+
+/* ── Live match left/right column split ──────────────────────────────────── */
+
+.live-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.live-score-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 26px;
+  padding: 1rem 1.1rem;
+  min-height: 200px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  gap: 0.5rem;
+}
+
+.live-score-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.live-team-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.live-score-number {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(4.2rem, 18vw, 7rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.live-score-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-height: 2.5rem;
+}
+
+/* ── Mini court column labels & team labels ──────────────────────────────── */
+
+.court-col-labels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.court-col-labels span {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.court-team-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.court-label-a {
+  color: var(--team-a);
+  font-weight: 600;
+}
+
+.court-label-b {
+  color: var(--team-b);
+  font-weight: 600;
+}
+
+.court-player--empty {
+  min-height: 112px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--line);
+}
+
+/* ── History & summary ───────────────────────────────────────────────────── */
+
 .history-card {
   gap: 0.7rem;
 }

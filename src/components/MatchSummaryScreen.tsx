@@ -23,21 +23,39 @@ export const MatchSummaryScreen = ({
     <div className="summary-hero">
       <p className="eyebrow">Match complete</p>
       <h2>{getTeamLabel(match, summary.winnerTeam)} wins</h2>
-      <p className="muted">
-        Final score {summary.scoreA} - {summary.scoreB} • {formatElapsed(summary.durationSeconds)}
-      </p>
+      {summary.sets && summary.sets.length > 0 ? (
+        <div className="set-badges" style={{ marginTop: "0.5rem" }}>
+          {summary.sets.map((set) => (
+            <span
+              key={set.setNumber}
+              className={`set-badge ${set.winner === "A" ? "set-badge-a" : "set-badge-b"}`}
+            >
+              Set {set.setNumber}: {set.scoreA}–{set.scoreB}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <p className="muted">
+          Final score {summary.scoreA}–{summary.scoreB}
+        </p>
+      )}
+      <p className="muted">{formatElapsed(summary.durationSeconds)}</p>
     </div>
 
     <div className="status-grid">
       <article className="status-card">
         <span className="eyebrow">Team A</span>
         <strong>{summary.teamAName}</strong>
-        <p>{summary.scoreA} points</p>
+        <p>
+          {(match.setWins?.A ?? 0)} set{(match.setWins?.A ?? 0) !== 1 ? "s" : ""} won
+        </p>
       </article>
       <article className="status-card">
         <span className="eyebrow">Team B</span>
         <strong>{summary.teamBName}</strong>
-        <p>{summary.scoreB} points</p>
+        <p>
+          {(match.setWins?.B ?? 0)} set{(match.setWins?.B ?? 0) !== 1 ? "s" : ""} won
+        </p>
       </article>
       <article className="status-card">
         <span className="eyebrow">Finished</span>
