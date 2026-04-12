@@ -3,6 +3,7 @@ import { getPlayerLabel, getTeamLabel } from "../lib/badmintonRules";
 import { formatElapsed } from "../lib/format";
 import type { ManualCorrectionInput, MatchState, TeamId } from "../types/match";
 import { MiniCourt } from "./MiniCourt";
+import { SinglesCourt } from "./SinglesCourt";
 
 interface LiveMatchScreenProps {
   match: MatchState;
@@ -175,17 +176,7 @@ export const LiveMatchScreen = ({
       {match.config.matchType === "doubles" ? (
         <MiniCourt match={match} />
       ) : (
-        <div className="singles-card">
-          <p className="eyebrow">Singles guidance</p>
-          <h3>
-            {getPlayerLabel(match, match.service.serverPlayerId)} serves from the{" "}
-            {match.service.serviceSide} service court.
-          </h3>
-          <p className="muted">
-            Receiver is {getPlayerLabel(match, match.service.receiverPlayerId)}. Side updates
-            automatically from the serving score parity.
-          </p>
-        </div>
+        <SinglesCourt match={match} />
       )}
 
       {/* ── Point buttons (left team / right team) ────────────────────────── */}

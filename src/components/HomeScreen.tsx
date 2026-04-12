@@ -4,6 +4,7 @@ interface HomeScreenProps {
   currentMatch: MatchState | null;
   historyCount: number;
   onNewMatch: () => void;
+  onQuickMatch: () => void;
   onResumeMatch: () => void;
   onViewHistory: () => void;
 }
@@ -12,6 +13,7 @@ export const HomeScreen = ({
   currentMatch,
   historyCount,
   onNewMatch,
+  onQuickMatch,
   onResumeMatch,
   onViewHistory
 }: HomeScreenProps) => (
@@ -30,16 +32,16 @@ export const HomeScreen = ({
       <button className="primary-button tall-button" onClick={onNewMatch}>
         New Match
       </button>
+      <button className="accent-button tall-button" onClick={onQuickMatch}>
+        Quick Match
+        <span className="button-subtext">Singles · 21 pts · no setup</span>
+      </button>
       <button className="secondary-button tall-button" onClick={onViewHistory}>
         History
       </button>
-      <button className="secondary-button tall-button" disabled>
-        Tournament
-        <span className="button-subtext">Coming soon</span>
-      </button>
       {currentMatch && (
-        <button className="accent-button tall-button" onClick={onResumeMatch}>
-          {currentMatch.status === "completed" ? "View Last Summary" : "Resume Current Match"}
+        <button className="secondary-button tall-button" onClick={onResumeMatch}>
+          {currentMatch.status === "completed" ? "View Last Summary" : "Resume Match"}
         </button>
       )}
     </div>
@@ -52,7 +54,10 @@ export const HomeScreen = ({
       </article>
       <article className="info-card">
         <h3>Why this app works</h3>
-        <p className="muted">It keeps the scoring flow huge and obvious, while the rules engine handles service rotation.</p>
+        <p className="muted">
+          It keeps the scoring flow huge and obvious, while the rules engine handles service
+          rotation automatically.
+        </p>
       </article>
     </div>
   </section>
