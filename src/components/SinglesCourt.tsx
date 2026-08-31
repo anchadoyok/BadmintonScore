@@ -98,8 +98,8 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
         role="img"
         aria-label="Singles badminton court diagram"
       >
-        {/* Court surface (Tournament Blue) */}
-        <rect x={0} y={0} width={W} height={H} fill="#142654" rx={14} />
+        {/* Court surface (Neo-Brutalist Court Blue) */}
+        <rect x={0} y={0} width={W} height={H} fill="#0984e3" stroke="#000000" strokeWidth={3} rx={12} />
 
         {/* Outer boundary */}
         <rect
