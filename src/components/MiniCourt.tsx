@@ -31,10 +31,14 @@ const renderSlot = (match: MatchState, teamId: TeamId, courtSide: CourtSide) => 
 
   return (
     <div className={cls}>
-      <span>{getPlayerLabel(match, player.id)}</span>
-      <small>{courtSide.toUpperCase()}</small>
-      {isServer && <strong>Server</strong>}
-      {isReceiver && <strong>Receiver</strong>}
+      <div className="court-player-header">
+        <span className="court-player-name">{getPlayerLabel(match, player.id)}</span>
+        <small className="court-side-pill">{courtSide.toUpperCase()}</small>
+      </div>
+      <div className="court-player-status">
+        {isServer && <strong className="court-badge server-badge">🏸 Server</strong>}
+        {isReceiver && <strong className="court-badge receiver-badge">🎯 Receiver</strong>}
+      </div>
     </div>
   );
 };

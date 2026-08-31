@@ -98,8 +98,8 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
         role="img"
         aria-label="Singles badminton court diagram"
       >
-        {/* Court surface */}
-        <rect x={0} y={0} width={W} height={H} fill="rgba(255,255,255,0.03)" rx={14} />
+        {/* Court surface (Tournament Blue) */}
+        <rect x={0} y={0} width={W} height={H} fill="#142654" rx={14} />
 
         {/* Outer boundary */}
         <rect
@@ -108,7 +108,8 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
           width={rightBack - leftBack}
           height={botLine - topLine}
           fill="none"
-          stroke="rgba(255,255,255,0.25)"
+          stroke="#ffffff"
+          strokeOpacity={0.75}
           strokeWidth={1.5}
         />
 
@@ -118,7 +119,8 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
           y1={H / 2}
           x2={rightBack}
           y2={H / 2}
-          stroke="rgba(255,255,255,0.15)"
+          stroke="#ffffff"
+          strokeOpacity={0.5}
           strokeWidth={1}
           strokeDasharray="4 4"
         />
@@ -129,10 +131,10 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
           y1={topLine}
           x2={cx}
           y2={botLine}
-          stroke="rgba(244,211,94,0.7)"
+          stroke="#ffffff"
           strokeWidth={2.5}
         />
-        <text x={cx} y={topLine - 4} textAnchor="middle" fontSize={9} fill="rgba(244,211,94,0.8)" fontWeight="bold">
+        <text x={cx} y={topLine - 4} textAnchor="middle" fontSize={9} fill="rgba(255,255,255,0.9)" fontWeight="bold">
           NET
         </text>
 
@@ -142,7 +144,8 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
           y1={topLine}
           x2={leftSsl}
           y2={botLine}
-          stroke="rgba(255,255,255,0.2)"
+          stroke="#ffffff"
+          strokeOpacity={0.6}
           strokeWidth={1}
         />
         <line
@@ -150,17 +153,31 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
           y1={topLine}
           x2={rightSsl}
           y2={botLine}
-          stroke="rgba(255,255,255,0.2)"
+          stroke="#ffffff"
+          strokeOpacity={0.6}
           strokeWidth={1}
+        />
+
+        {/* ── Diagonal serve trajectory ─────────────────────────────────── */}
+        <line
+          x1={serverX}
+          y1={serverY}
+          x2={receiverX}
+          y2={receiverY}
+          stroke="rgba(244,211,94,0.4)"
+          strokeWidth={1.5}
+          strokeDasharray="4 3"
         />
 
         {/* ── Server marker ─────────────────────────────────────────────── */}
         <circle
           cx={serverX}
           cy={serverY}
-          r={14}
+          r={15}
           fill={serverIsLeft ? leftColor : rightColor}
-          opacity={0.9}
+          stroke="#f4d35e"
+          strokeWidth={2}
+          opacity={0.95}
         />
         <text
           x={serverX}
@@ -175,24 +192,25 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
         </text>
         <text
           x={serverX}
-          y={serverY + 20}
+          y={serverY + 22}
           textAnchor="middle"
-          fontSize={7}
-          fill="rgba(244,211,94,0.9)"
+          fontSize={7.5}
+          fill="rgba(244,211,94,1)"
           fontWeight="bold"
         >
-          SERVER
+          🏸 SERVER
         </text>
 
         {/* ── Receiver marker ───────────────────────────────────────────── */}
         <circle
           cx={receiverX}
           cy={receiverY}
-          r={14}
+          r={15}
           fill="none"
           stroke={serverIsLeft ? rightColor : leftColor}
-          strokeWidth={2}
-          opacity={0.85}
+          strokeWidth={2.5}
+          strokeDasharray="2 2"
+          opacity={0.95}
         />
         <text
           x={receiverX}
@@ -207,13 +225,13 @@ export const SinglesCourt = ({ match }: SinglesCourtProps) => {
         </text>
         <text
           x={receiverX}
-          y={receiverY + 20}
+          y={receiverY + 22}
           textAnchor="middle"
-          fontSize={7}
-          fill="rgba(116,198,157,0.9)"
+          fontSize={7.5}
+          fill="rgba(116,198,157,1)"
           fontWeight="bold"
         >
-          RECEIVER
+          🎯 RECEIVER
         </text>
       </svg>
     </div>

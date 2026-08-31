@@ -22,7 +22,7 @@ Mobile-first badminton scoring app built with React + TypeScript. The MVP focuse
 
 ### Doubles
 
-The app uses a dedicated rules engine in [src/lib/badmintonRules.ts](C:\Users\ancha\Downloads\Badminton Score\src\lib\badmintonRules.ts) with explicit rotation logic:
+The app uses a dedicated rules engine in [src/lib/badmintonRules.ts](src/lib/badmintonRules.ts) with explicit rotation logic:
 
 - Each team tracks two players and their current left/right court positions.
 - When the serving side wins a rally:
@@ -57,10 +57,10 @@ That lets the rules engine rebuild a deterministic state and continue from there
 
 ## Project structure
 
-- [src/lib/badmintonRules.ts](C:\Users\ancha\Downloads\Badminton Score\src\lib\badmintonRules.ts): Pure scoring and service rotation engine.
-- [src/lib/badmintonRules.test.ts](C:\Users\ancha\Downloads\Badminton Score\src\lib\badmintonRules.test.ts): Unit tests for service logic, undo, and correction.
-- [src/lib/storage.ts](C:\Users\ancha\Downloads\Badminton Score\src\lib\storage.ts): Local storage persistence.
-- [src/components](C:\Users\ancha\Downloads\Badminton Score\src\components): Home, setup, live scoring, summary, history, and doubles court UI.
+- [src/lib/badmintonRules.ts](src/lib/badmintonRules.ts): Pure scoring and service rotation engine.
+- [src/lib/badmintonRules.test.ts](src/lib/badmintonRules.test.ts): Unit tests for service logic, undo, and correction.
+- [src/lib/storage.ts](src/lib/storage.ts): Local storage persistence.
+- [src/components](src/components): Home, setup, live scoring, summary, history, and doubles court UI.
 
 ## Run locally
 

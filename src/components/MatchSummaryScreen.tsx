@@ -72,7 +72,7 @@ export const MatchSummaryScreen = ({
     setIsCapturing(true);
     try {
       const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: "#0b1c17",
+        backgroundColor: "#090e1c",
         scale: 2,
         useCORS: true
       });
@@ -91,14 +91,14 @@ export const MatchSummaryScreen = ({
     const margin = 20;
     let y = margin;
 
-    // Background
-    doc.setFillColor(11, 28, 23);
+    // Background (Tournament Court Blue #090e1c)
+    doc.setFillColor(9, 14, 28);
     doc.rect(0, 0, 210, 297, "F");
 
     // App label
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10);
-    doc.setTextColor(244, 211, 94);
+    doc.setTextColor(250, 204, 21);
     doc.text("BADMINTON MATCH ASSISTANT", margin, y);
     y += 14;
 
